@@ -1,21 +1,21 @@
-.overflow{
-  overflow-x:visible ;
+.overflow {
+  overflow-x: visible;
 }
-.container_bank_transactions{
+.container_bank_transactions {
   padding: 30px 20px 20px 20px;
 }
-.header{
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.inform{
+.inform {
   padding: 40px 9.5% 0 8%;
   color: red;
-  display:flex;
-  justify-content: flex-end
+  display: flex;
+  justify-content: flex-end;
 }
 
 .container_transactions {
@@ -37,17 +37,17 @@
     border-radius: 18px;
     border: 1px solid #e7ecf0;
     // gap: 10px;
-    .currency_text{
-      display:flex;
+    .currency_text {
+      display: flex;
       gap: 15px;
       align-items: center;
       justify-content: center;
-      img{
+      img {
         height: 70px;
       }
     }
 
-    .text_balance_total{
+    .text_balance_total {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -62,7 +62,7 @@
       // }
     }
 
-    .add_transactions{
+    .add_transactions {
       height: 50px;
       border: none;
       width: 30%;
@@ -72,13 +72,13 @@
       color: #fff;
     }
 
-    .add_transactions:hover{
+    .add_transactions:hover {
       background-color: #09502f;
       transition: 0.5s all ease;
     }
   }
 
-  .upload_file{
+  .upload_file {
     // margin-top: 15px;
     // padding: 10px;
     display: flex;
@@ -86,11 +86,11 @@
     align-items: flex-start;
     gap: 10px;
 
-    label{
+    label {
       font-weight: 500;
     }
 
-    input{
+    input {
       width: 100%;
       border-radius: 12px;
       border: 1px solid #e7ecf0;
@@ -98,23 +98,23 @@
   }
 }
 
-.upload{
+.upload {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
   text-align: justify;
-
-  span{
+  // gap: 50px;
+  span {
     font-size: 16px;
     font-weight: 500;
   }
 }
 
-.text{
-  color: #7B8998;
+.text {
+  color: #7b8998;
 }
-.amount{
+.amount {
   font-size: 30px;
   // font-size: 2em;
   font-weight: bold;
@@ -127,6 +127,11 @@
   border: 1px solid #e7ecf0;
 }
 
+@media only screen and (max-width: 1478px) {
+  .container_transactions {
+    padding: 10px 2% 0 2%;
+  }
+}
 
 @media only screen and (max-width: 1300px) {
   .container_transactions {
@@ -138,39 +143,46 @@
       padding: 20px;
     }
   }
-
-  .text{
-    color: #7B8998;
+  .upload {
+    flex-direction: column;
+    gap: 8px;
   }
-  .amount{
+
+  .text {
+    color: #7b8998;
+  }
+  .amount {
     font-size: 25px;
     font-weight: bold;
   }
 }
 
 @media only screen and (max-width: 990px) {
-  .container_transactions{
+  .container_transactions {
     flex-direction: column;
     padding: 20px 10px 0 10px;
     gap: 8px;
 
-    .container_balance_total, .transactions {
+    .container_balance_total,
+    .transactions {
       width: 100%;
     }
   }
+  .upload {
+    flex-direction: row;
+  }
 }
 
-
 @media only screen and (max-width: 380px) {
-  *{
+  * {
     transition: 1s all ease;
   }
-  .upload{
-    display: flex;
+  .upload {
+    // display: flex;
     flex-direction: column;
     gap: 5px;
 
-    button{
+    button {
       width: 100%;
     }
   }
@@ -178,11 +190,11 @@
   .container_balance_total .balance_total {
     flex-direction: column;
     gap: 15px;
-    .currency_text img{
+    .currency_text img {
       height: 50px;
     }
 
-    .add_transactions{
+    .add_transactions {
       width: 100%;
     }
   }
