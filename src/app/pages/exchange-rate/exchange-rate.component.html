@@ -1,0 +1,157 @@
+<div class="container_exchange_rate">
+  <div class="transactions">
+    <div class="container_bank_transactions">
+      <div class="header">
+        <div>
+          <h1 class="page-header">Movimientos Bancarios</h1>
+        </div>
+      </div>
+
+      <div class="card-body table-responsive tablecontainer">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nro</th>
+              <th>Fecha</th>
+              <th>Venta</th>
+              <th>Compra</th>
+              <th>Opcion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let exRate of listExchangeRateJSON; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ exRate.fecha }}</td>
+              <td>{{ exRate.venta }}</td>
+              <td>{{ exRate.compra }}</td>
+              <td>
+                <button
+                  class="btn btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#updateExchangeRateJSON"
+                  (click)="loadExchangeRate(exRate)"
+                >
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button
+                  class="btn btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteExchangeRateJSON"
+                  (click)="loadExchangeRate(exRate)"
+                >
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div
+  class="modal fade"
+  id="updateExchangeRateJSON"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Editar Transaction
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div
+        class="modal-body mdcontainer"
+        style="display: flex; flex-direction: column; gap: 10px">
+
+        <div class="" style="display: flex; justify-content: center">
+          <label class="form-label"
+            >Fecha
+            <input style="width: 100%;"
+              type="date"
+              [(ngModel)]="loadExchangeRateJSON.fecha"
+              class="form-control"
+              placeholder="Peso"
+            />
+          </label>
+        </div>
+        <div class="" style="display: flex; justify-content: center">
+          <label class="form-label"
+            >Venta
+            <input
+              type="text"
+              [(ngModel)]="loadExchangeRateJSON.venta"
+              class="form-control"
+              placeholder="Peso"
+            />
+          </label>
+        </div>
+        <div class="" style="display: flex; justify-content: center">
+          <label class="form-label"
+            >Compra
+            <input
+              type="text"
+              [(ngModel)]="loadExchangeRateJSON.compra"
+              class="form-control"
+              placeholder="Peso"
+            />
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="exchangeRateEdit()"
+          data-bs-dismiss="modal"
+        >
+          Editar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Transaction -->
+
+<div class="modal fade" id="deleteExchangeRateJSON" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          Eliminar registro : {{ loadExchangeRateJSON.fecha }}
+        </h2>
+      </div>
+      <div class="modal-body">
+        <label>¿Estás seguro de eliminar el registro?</label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          type="button"
+          (click)="deleteExchangeRate()"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

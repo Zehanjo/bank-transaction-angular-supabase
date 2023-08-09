@@ -1,0 +1,310 @@
+<div *ngIf="switchValue==false" class="inform">
+  <label class="form-check-label" for="flexSwitchCheckChecked">Tipo de cambio por defecto es sunat: Mas informacion <a href="https://e-consulta.sunat.gob.pe/cl-at-ittipcam/tcS01Alias" target="_blank">aqui</a></label>
+</div>
+<div *ngIf="switchValue" class="inform">
+  <label class="form-check-label" for="flexSwitchCheckChecked">Tipo de cambio(JSON proporcionado) </label>
+</div>
+
+<div class="container_transactions">
+  <div class="container_balance_total">
+    <!-- <div class="balance_total">
+      <div class="currency_text">
+        <img class="porisca" src="../../../assets/currency.png" />
+        <div class="text_balance_total">
+          <span class="text">Balance Total</span>
+          <span class="amount">
+            {{ balance_total == 0 ? "loading...." : balance_total }}
+          </span>
+        </div>
+      </div>
+      <button class="add_transactions" data-bs-toggle="modal" data-bs-target="#addTransactions" (click)="fillSelectionCurrency()">Registrar</button>
+    </div> -->
+    <div class="mb-3 balance_total upload_file">
+      <div class="upload">
+        <span> {{load == '1' ? 'Subir Multiples Datos(csv)' : 'Subiendo datos....'}}</span>
+        <button class="btn btn-success" (click)="uploadData()">
+          <i class="bi bi-upload"></i>
+          Guardar
+        </button>
+      </div>
+      <input
+        type="file"
+        accept="json/csv"
+        name=""
+        id="fileInput"
+        class="form-control"
+        (change)="selectFile($event)"
+      />
+    </div>
+  </div>
+
+  <div class="transactions">
+    <div class="container_bank_transactions">
+      <div class="header">
+        <div>
+          <h1 class="page-header">Movimientos Bancarios</h1>
+        </div>
+        <div>
+          <div class="form-check form-switch" style="margin-bottom: 10px">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckChecked"
+              [(ngModel)]="switchValue"
+              (change)="switchApiSunat()"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body table-responsive tablecontainer">
+        <table class="table table-striped overflow">
+          <thead>
+            <tr>
+              <th>Nro</th>
+              <th>Fecha</th>
+              <th>Descripcion</th>
+              <!-- <th>Moneda</th> -->
+              <th>Monto</th>
+              <th>Codigo Unico</th>
+              <th>Opcion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let transactions of listTransactions; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ transactions.date }}</td>
+              <td>{{ transactions.description }}</td>
+              <!-- <td>{{ transactions.currency }}</td> -->
+              <td>{{ transactions.amount }}</td>
+              <td>{{ transactions.code_unique }}</td>
+              <td>
+                <button
+                  class="btn btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#updateTransaction"
+                  (click)="loadTransactions(transactions)"
+                >
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button
+                  class="btn btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteTransaction"
+                  (click)="loadTransactions(transactions)"
+                >
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Agregar Movimientos Bancarios -->
+<div
+  class="modal fade"
+  id="addTransactions"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Editar Transaction
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div
+        class="modal-body mdcontainer"
+        style="display: flex; flex-direction: column; gap: 10px"
+      >
+        <div
+          class="testr_container"
+          style="display: flex; gap: 15px; justify-content: center; width: 100%"
+        >
+          <label class="form-label"
+            >Fecha<input
+              type="date"
+              [(ngModel)]="newTransaction.date"
+              class="form-control" required
+          /></label>
+          <label class="form-label"
+            >Descripcion
+            <input
+              type="text"
+              [(ngModel)]="newTransaction.description"
+              class="form-control"
+              placeholder="Descripcion" required
+            />
+          </label>
+        </div>
+        <div class="" style="display: flex; gap: 15px; justify-content: center">
+          <label class="form-label"
+            >Monto
+            <input
+              type="text"
+              [(ngModel)]="newTransaction.amount"
+              class="form-control"
+              placeholder="Monto" required
+            />
+          </label>
+          <label class="form-label"
+            >Moneda
+            <select class="form-select" (change)="selectionCurrency($event)" required>
+              <option selected>Seleccione</option>
+              <option
+                *ngFor="let cl of currencyList"
+                value="{{ cl.id }}"
+              >
+                {{ cl.name }}
+              </option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="transactionAdd()"
+          data-bs-dismiss="modal"
+        >
+          Editar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modify Transaction -->
+<div
+  class="modal fade"
+  id="updateTransaction"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Editar Transaction
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div
+        class="modal-body mdcontainer"
+        style="display: flex; flex-direction: column; gap: 10px"
+      >
+        <div
+          class="testr_container"
+          style="display: flex; gap: 15px; justify-content: center; width: 100%"
+        >
+          <label class="form-label"
+            >Fecha<input
+              type="date"
+              [(ngModel)]="loadTransaction.date"
+              class="form-control"
+          /></label>
+          <label class="form-label"
+            >Descripcion
+            <input
+              type="text"
+              [(ngModel)]="loadTransaction.description"
+              class="form-control"
+              placeholder="Descripcion"
+            />
+          </label>
+        </div>
+        <div class="" style="display: flex; gap: 15px; justify-content: center">
+          <label class="form-label"
+            >Monto
+            <input
+              type="text"
+              [(ngModel)]="loadTransaction.amount"
+              class="form-control"
+              placeholder="Monto"
+            />
+          </label>
+          <label class="form-label"
+            >Moneda
+            <select class="form-select" (change)="selectionCurrency($event)">
+              <option selected>Seleccione tipo de moneda</option>
+              <option
+                *ngFor="let cl of currencyList"
+                value="{{ cl.id }}"
+                [selected]="loadTransaction.currency == cl.name"
+              >
+                {{ cl.name }}
+              </option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="transactionEdit()"
+          data-bs-dismiss="modal"
+        >
+          Editar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Transaction -->
+
+<div class="modal fade" id="deleteTransaction" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          Eliminar registro : {{ loadTransaction.code_unique }}
+        </h2>
+      </div>
+      <div class="modal-body">
+        <label>¿Estás seguro de eliminar el registro?</label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          type="button"
+          (click)="deleteTransaction()"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
